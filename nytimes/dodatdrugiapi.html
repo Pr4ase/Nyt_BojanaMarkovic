@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Playground</title>
+
+    <style type="text/css">
+        table {
+            width: 100%;
+        }
+
+        thead {
+            background-color: black;
+            color: white;
+        }
+
+        table,
+        th,
+        td {
+            border: thin solid black;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 0.5em;
+            text-align: left;
+        }
+
+        tbody>tr:hover {background-color: #ddd;}
+    </style>
+</head>
+
+<body>
+    <h1>React: Step by step</h1>
+
+    <div id="root">
+    </div>
+    <script type="text/babel">
+
+        class Page extends React.Component {
+            constructor(props){
+                super(props)
+                this.state = {
+                    webs: []
+                    
+                };
+                /*this.state = {
+                    data: [],
+                    selectedUser: {
+                        id: '',
+                        name: '',
+                        username: '',
+                        email: '',
+                        address: {
+                            street: '',
+                            city: '',
+                        },
+                        phone: '',
+                        website: ''
+                    }
+                };*/
+                this.onSuccess = this.onSuccess.bind(this);
+               /* this.setData = this.setData.bind(this);  */                                              
+              /*  this.handleTableRowClick = this.handleTableRowClick.bind(this);*/
+            }
+            
+
+            /*setData(theDataToSet){                
+                this.setState({data: theDataToSet});
+            }*/
+
+            componentDidMount(){
+                $.ajax({
+                    type: "GET",
+                    data: {apikey: "84f2dae5d3944f4c8e56a0c7b658eb49"
+                        },
+                    'url': 'https://api.nytimes.com/svc/archive/v1/2017/1.json',
+                    'success': this.onSuccess 
+                    
+                })
+            }
+            
+          onSuccess(responseData) {
+          let webs = [];
+          for(var i = 0; i < 2; i++) {
+            const doc = responseData.response.docs[i];
+             /* webs.push(doc.web_url);*/              
+             //console.log(doc.web_url);              
+              ReactDOM.render(<LinkPrivew imgurl={doc.web_url} />, root);
+          }
+            //console.log( 'asdf',webs);
+            this.setState({'webs': webs});
+              
+        }
+
+           /* handleTableRowClick(item) {
+                this.setState({selectedUser: item})
+            }*/
+
+            render() {
+                return (
+                    <div className="row">
+                        <div className="col-lg-8">
+                        <Table
+                                webs={this.state.webs}
+                                />
+                            
+                        </div>
+                        <div className="col-lg-4">
+                           
+                        </div>
+                    </div>
+                )
+            }
+        }
+
+       /* const UserDetails = (props) => {
+            const user = props.user;
+
+            return (
+                <div>
+                    <ul>
+                        <li>ID: {user.id}</li>
+                        <li>Name: {user.name}</li>
+                        <li>Username: {user.username}</li>
+                        <li>Email: {user.email}</li>
+                        <li>Address:</li>
+                        <ul>
+                            <li>Street: {user.address.street}</li>
+                            <li>City: {user.address.city}</li>
+                        </ul>
+                        <li>Phone: {user.phone}</li>
+                        <li>Website: {user.website}</li>
+                    </ul>
+                </div>
+            );
+        }*/
+
+        class TableRow extends React.Component{
+            render(){
+                /*const onRowClick = this.props.onRowClick;*/
+                const web = this.props.web;
+                console.log('tr':web)
+
+                const tr =
+                    <tr >
+                        
+                        <td><a href={web} target="_blank">{web}</a></td>
+                        
+                    </tr>;
+                return tr;
+            }
+        }
+
+
+        class Table extends React.Component {            
+            
+            render() {
+                const {webs} = this.props;                
+                console.log('webs1', webs.length);
+                if(webs.length == 0){
+                    return <p>No results</p>;
+                }
+                const table =
+                    <table>
+                        <thead>
+                            <tr>
+                                
+                                <th>web</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {   
+                                webs.map(
+                                    (web) => <TableRow
+                                        web={web}
+                                                 />
+                                )
+                            }
+                        </tbody>
+
+                    </table>;
+
+                 return table;
+            }
+        }
+
+
+        class LinkPrivew extends React.Component {
+           constructor(props){
+              
+               super(props)
+               /* this.state = {
+               
+                    webs: []
+                    
+                };
+                /*this.state = {
+                    data: [],
+                    selectedUser: {
+                        id: '',
+                        name: '',
+                        username: '',
+                        email: '',
+                        address: {
+                            street: '',
+                            city: '',
+                        },
+                        phone: '',
+                        website: ''
+                    }
+                };*/
+               this.onSuccess = this.onSuccess.bind(this);
+               /* this.setData = this.setData.bind(this);              */                                 
+              /*  this.handleTableRowClick = this.handleTableRowClick.bind(this);*/
+            }
+            
+
+            setData(theDataToSet){                
+                this.setState({data: theDataToSet});
+            }
+
+            componentDidMount(imgurl){                
+                $.ajax({                                                            
+                    type: "GET",
+                    'url': 'https://api.linkpreview.net/?key=5a8ee84b0c7bc95d00385ee8c0e99d5ff80c506ce93d0&q='+imgurl,
+                    'success': this.onSuccess /*function(data){*/
+                        /*console.log(data)*/
+                        /*//console.log('provera componentdidmount: ',data.response.docs);}*/
+                    
+                
+                })
+               
+            }
+            
+            render(){
+                return (
+                    <div>  
+                        
+                    </div>
+                );
+            }
+          onSuccess(responseData) {
+             console.log(responseData)
+          }
+            
+         /* let webs = [];
+          for(var i = 0; i < 20; i++) {
+            const doc = responseData.response.docs[i];
+            webs.push(doc.web_url);
+          }*/
+        /*    console.log(data);
+         /* this.setState({'webs': webs});
+        }*/
+
+           /* handleTableRowClick(item) {
+                this.setState({selectedUser: item})
+            }*/
+
+          /* render() {
+                return (
+                    <div className="row">
+                        <div className="col-lg-8">
+                        <Table
+                                webs={this.state.webs}
+                                />
+                            
+                        </div>
+                        <div className="col-lg-4">
+                           
+                        </div>
+                    </div>
+                )
+            }*/
+        }
+
+        const root = document.getElementById('root');
+
+        ReactDOM.render(<Page/>, root);
+        
+    </script>
+</body>
+
+</html>

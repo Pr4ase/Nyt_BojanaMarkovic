@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+        <!-- Bootstrap -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <title>The New York Times News</title>
+
+        <style type="text/css">
+                        
+            h3 {
+                padding: 10px;                
+                background-color: #EFEFEF;         
+                font-family: sans-serif;
+                font-size: 30px;
+            }
+             
+            label {
+                padding: 10px;
+            }
+            
+            ul {
+                list-style-type: none;
+            }
+                     
+            li {
+                font-size: 14px;
+                font-color: #C0C0C0;
+            }                            
+            
+            .hdr {                                
+                display: block;
+                background-color: #C0C0C0;                
+                width: auto;
+            }
+            
+            .header {                
+                padding: 10px;
+                background-color: #C0C0C0;
+                font-size: 20px;
+            }            
+            
+            .main {
+                border-bottom: 1px solid #C0C0C0;   
+            }            
+
+            .article_preview {
+                border: 1px solid #C0C0C0;
+            }                        
+
+            .row {                                
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+                margin-right: -15px;
+                margin-left: -15px;
+            }
+            
+            .content {                                
+                float: left;
+                -webkit-box-flex: 0;
+                -ms-flex: 0 0 66.666667%;
+                flex: 0 0 66.666667%;
+                width: 100%;
+                max-width: 60%;                
+            }                        
+
+            .form-control {                
+                display: block;
+                width: 100%;
+                font-size: 1rem;
+                color: #495057;
+                background-color: #fff;
+                background-clip: padding-box;
+                border: 1px solid #ced4da;
+                border-radius: .25rem;
+                transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            }
+            
+            btn-group-lg>.btn, .btn-lg {
+                padding: .5rem 1rem;
+                font-size: 1.25rem;
+                line-height: 1.5;
+                border-radius: .3rem;
+            }
+            
+            .btn {
+                display: inline-block;
+                font-weight: 400;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                border: 1px solid transparent;
+                padding: .375rem .75rem;
+                font-size: 1rem;
+                line-height: 1.5;
+                border-radius: .25rem;
+                transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            }
+            [class*="col-"] {
+                 border: 1px solid #C0C0C0
+                width: 100%;
+            }
+            
+            /*********************************************************
+             * TABLETS
+             *********************************************************/
+            @media only screen and (min-width: 600px) {
+            
+             .image_title_m {
+                border: 1px solid #C0C0C0;
+                   
+                font-size: 18px;
+                font-weight: 500;
+            }
+            
+            .image_desc_m {
+                border: 1px solid #C0C0C0;
+            }
+            
+            .image_itself_m{
+                border: 1px solid #C0C0C0;
+                width: 25%;
+            }
+                border: 1px solid #C0C0C0
+               
+                .col-m-1 {width: 8.33%;}
+                .col-m-2 {width: 16.66%;}
+                .col-m-3 {width: 75%;}
+                .col-m-4 {width: 33.33%;}
+                .col-m-5 {width: 41.66%;}
+                .col-m-6 {width: 50%; padding-bottom: 20 px}
+                .col-m-7 {width: 58.33%;}
+                .col-m-8 {width: 66.66%;}
+                .col-m-9 {width: 75%;}
+                .col-m-10 {width: 83.33%;}
+                .col-m-11 {width: 91.66%;}
+                .col-m-12 {width: 100%;}
+                .details-m {float: left; width: 25%;}
+                .image-desc-m {border: 1px solid #C0C0C0; font-size: 12px}            
+                .image-itself-m {border: 1px solid #C0C0C0; width: 100%;}
+                .image-title-m {border: 1px solid #C0C0C0;font-size: 18px;font-weight: 500;}                        
+            }
+            
+            /*********************************************************
+             * DESKTOP
+             *********************************************************/
+            @media only screen and (min-width: 768px) {
+                /* For desktop: */
+               .image_title {
+                    border: 1px solid #C0C0C0;
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+
+                .image_desc {
+                    border: 1px solid #C0C0C0;
+                }
+
+                .image_itself {
+                    border: 1px solid #C0C0C0;
+                    width: 25%;
+                }
+                .col-1 {width: 8.33%;}
+                .col-2 {max-width: 16.66%;    
+                        position: relative;
+                        float: left;}
+                .col-3 {width: 25%;
+                        position: relative;
+                        padding-bottom: 20px;
+                        float: left;}
+                .col-4 {width: 33.33%;}
+                .col-5 {width: 41.66%;}
+                .col-6 {width: 50%;}
+                .col-7 {width: 58.33%;}
+                .col-8 {width: 75%;}
+                .col-9 {width: 75%;}
+                .col-10 {width: 83.33%; border: 1px solid #C0C0C0}
+                .col-11 {width: 91.66%;}
+                .col-12 {width: 100%;}
+                .details {float: left; width: 25%;}
+                .image-desc {border: 1px solid #C0C0C0; font-size: 12px}            
+                .image-itself {border: 1px solid #C0C0C0}
+                .image-title {border: 1px solid #C0C0C0;font-size: 18px;font-weight: 500;}                        
+            }            
+            
+            /*
+            table {
+                width: 100%;
+            }
+
+            thead {
+                background-color: black;
+                color: white;
+            }
+            
+            tbody > tr:hover {
+                background-color: #ddd;
+            }
+
+            table,th,td {
+                border: thin solid black;
+                border-collapse: collapse;
+            }
+
+            th,td {
+                padding: 0.5em;
+                text-align: left;
+            }
+            
+            .grid-container {
+                display: grid;
+                grid-template-columns: auto auto auto auto;
+                grid-gap: 50px;
+            }
+            
+            .grid-container > div { 
+                text-align: center;
+                padding: 50px 0;  
+            }    
+            */
+            
+        </style>
+    </head>
+
+    <body>
+
+        <div className="hdr"><div><h3>The New York Times News</h3></div></div>
+                
+        <div id="root"></div>
+        
+        <script type="text/babel">
+
+            /*************************************************************************************************************
+            
+            REACT PODSETNIK:
+            
+            React komponenta je naziv za klasu u standardno zargonu objektno orjentisanog programiranja
+            Konstruktor definise kako ce komponenta biti inicijalizovana (sa kojim default parametrima i varijablama)
+            ComponentDiDMount je event koji se izvrsi kada se komponenta uspesno instancira
+            Programski code napisan u componentDiDMount{...} ce sa auomatski zivrsiti nakon uspesnog isntanciranja 
+            Render je metoda komponente koaj se poslednja zivrsava u okviru komponente i njen output je html 
+            Web Api moze da konzumira i single value i niz bez potrebe za iteratorom (izbegavanje sinhronosti)
+            Bar jedan sinhroni (tradicionani) poziv u asinhronom (ajax) pozivu ponistava prednosti asinhronog poziva
+            Dobra praksa - console.log('naziv metode gde se izvrsava/naziv varijable:',{varijabla/niz/...})
+            
+            Svaka React komponenta se instancira pozivom naziva komponente
+            Redosled izvrsavanja
+                1.  instanciranje se desava izvan komponente
+                2.  constructor (kako da se instancira klasa i koja je prva metoda koja ce se izvrsiti - obicno .bind)
+                3.  componentDidMount (glavna bsiness logika komponente, najcesce web api call i sl.)
+                4.a componentDidMount onSuccess (poziva render)
+                4.b componentDidMount onError (ne poziva render)
+                5.  render (sastavlja finalni html za output u pozivajuci program)
+            
+            *************************************************************************************************************/
+            
+            class Page extends React.Component{
+
+                //konstruktor klase Page definise kako ce klasa biti instancirana
+                //definise niz 'webs' - kolekcija web linkova
+                //impelmentira metodu onSuccess koja ce biti automatksi pozvana kada Wweb api vrati success code
+                constructor(props){
+                    super(props)
+                    this.state = {
+                        urls: [],
+                        year:'',
+                        month:'',
+                        selectedUrl: {
+                            web_url: '',
+                                headline: {
+                                    main: ''
+                                },                            
+                            byline: {
+                                original: ''
+                                },
+                            pub_date: '',
+                            source: '',
+                            word_count:''
+                            }
+                    };   
+
+                    this.onSuccess = this.onSuccess.bind(this);                      
+                    this.handleChangeYear = this.handleChangeYear.bind(this);
+                    this.handleChangeMonth = this.handleChangeMonth.bind(this);                    
+                    this.handleClick = this.handleClick.bind(this);
+                    this.handleSubmit = this.handleSubmit.bind(this);
+                }      
+                
+                //handler za click event na image
+                handleClick(item){
+                    this.setState({selectedUrl: item})
+                }
+
+                //handler za change event za input box 'year'
+                handleChangeYear(event){
+                   this.setState({year: event.target.value});
+                }
+
+                //handler za change event za input box 'month'
+                /*  handleChangeMonth(event){
+                    this.setState({month: event.target.value}); 
+                }*/
+                handleChangeMonth(event){
+                this.setState({selectValue:event.target.value});
+                 }
+                //handler za form submit
+                handleSubmit(event, prevState){                    
+                    event.preventDefault();
+                    
+                    /*                       
+                    //ako bilo koji od navedenih parametara nije definisan izadji napolje
+                    if(!this.state.year || !this.state.month){
+                        return;
+                    }    
+
+                    const oy = prevState.year
+                    const om = prevState.month
+                    const ny = this.state.year
+                    const nm = this.state.month
+
+                    //ako su trenutne vrednosti navedenih parametara identicne prethodnim, ne ponavljaj web api poziv
+                    if(oy == ny && om == nm){
+                        return;
+                    }
+                    */
+                    
+                    $.ajax({
+                        type   : "GET",
+                        url    : "https://api.nytimes.com/svc/archive/v1/" + this.state.year+ "/" + this.state.selectValue + ".json",  
+                        data   : {apikey: "84f2dae5d3944f4c8e56a0c7b658eb49"},                    
+                        success: this.onSuccess                     
+                    })
+                    
+                }                
+    
+                //metoda se izvrsava nakon uspesnog instanciranja klase 'Page' a inicira ajax web api poziv
+                componentDidUpdate(prevProps, prevState){
+                    
+                    //ako bilo koji od navedenih parametara nije definisan izadji napolje
+                    if(!this.state.year || !this.state.month){
+                        return;
+                    }    
+
+                    const oy = prevState.year;
+                    const om = prevState.month;
+                    const ny = this.state.year;
+                    const nm = this.state.month;
+
+                    //ako su trenutne vrednosti navedenih parametara identicne prethodnim, ne ponavljaj web api poziv
+                    if(oy == ny && om == nm) {
+                        return;
+                    }
+                    
+                    /*
+                    $.ajax({
+                        type   : "GET",
+                        url    : "https://api.nytimes.com/svc/archive/v1/" + this.state.year+ "/" + this.state.month + ".json",  
+                        data   : {apikey: "84f2dae5d3944f4c8e56a0c7b658eb49"},                    
+                        success: this.onSuccess                     
+                    })
+                    */
+                }
+                
+                //metoda se izvrsava nakon uspesnog izvrsenja web api poziva u componentDidMount
+                onSuccess(responseData){
+                    
+                    //definise lokalniu niz 'webs'
+                    let urls = [];
+                    
+                    //iterator iz prvog web api odgovora smesta linkove u niz 'webs' - kolekicja web linkova
+                    for(var i = 0; i < 20; i++) {
+                        const doc = responseData.response.docs[i];                                            
+                        urls.push(doc);
+                    }
+                    
+                    //lokalni niz smestamo u state kao bi bio dostupan u drugim komponentama                   
+                    this.setState({'urls': urls});                    
+                }
+                
+                //render pakuje podatke nakon onSuccess (primer poziva f-je iz React-a)
+                //ovde se definise dizajn web stranice
+                //<button onClick="find()" type="submit" className="btn btn-default btn-lg">Search news</button>
+                render(){
+                    return(
+                        <section id="finder">
+                            <div className="main">
+                                <div>
+                                    <form onSubmit={this.handleSubmit}>
+                                        <label>Year:
+                                            <input
+                                                type="number"
+                                                id="NYTYEAR"
+                                                className="form-control"
+                                                placeholder="Search year ..."
+                                                value={this.state.year}
+                                                onChange={this.handleChangeYear}
+                                                step="1" min="1851" max={getYear()}/>
+                                        </label>                    
+                                        <label>Month:
+                                                  <select 
+                                                    
+                                                    id="NYTMONTH"
+                                                    
+                                                    className="form-control"  
+                                                    value={this.state.selectValue} 
+                                                    onChange={this.handleChangeMonth} 
+                                                  >
+                                                   <option value="1">Jan</option>
+                                                   <option value="2">Feb</option>
+                                                   <option value="3">Mar</option>
+                                                   <option value="4">Apr</option>
+                                                   <option value="5">May</option>
+                                                   <option value="6">Jun</option> 
+                                                   <option value="7">Jul</option>
+                                                   <option value="8">Aug</option>
+                                                   <option value="9">Sep</option>
+                                                   <option value="10">Oct</option>
+                                                   <option value="11">Nov</option>
+                                                   <option value="12">Dec</option>   
+                                                  </select>
+             
+                                        </label>
+                                        <input type="submit" value="Search News" className="btn btn-default btn-lg" />
+                                    </form>
+                                </div>                                    
+                            </div>
+                            <div className="row">
+                                <div className="col-8 col-m-3 ">    
+                                    <Urls urls={this.state.urls} selectionHandler={this.handleClick} />  
+                                </div>
+                                <div className="details details-m">
+                                    <UrlDetails url={this.state.selectedUrl} />
+                                </div>
+                            </div>  
+                        </section>
+                    )
+                }
+            }  
+
+            //nezavisna f-ja van svih definisanih klasa
+            //primer kako da se preko nezavisne f-je iz jedne klase 'Page' instancira druga klasa 'Image' i da se
+            //tom prilikom prenesu parametri iz  pozivajuce u pozvanu klasu
+            function Urls(props){
+                return(
+                    <div> 
+                        {props.urls.map((url, index) =><Image key={index} url={url} clickHandler={props.selectionHandler} />)}
+                    </div>
+                );
+            }
+            
+            //instancira je f-ja 'Urls', poziva drugi web api a vraca div u kome se nalaze title, image i description
+            class Image extends React.Component{
+
+                //konstruktor klase Image definise kako ce klasa biti instancirana
+                //definisevarijable u kojim ace biti smestei podaci za svaki item iz drugogo web api-ja
+                //impelmentira metodu onSuccess koja ce biti automatksi pozvana kada web api vrati success code             
+                constructor(props){
+                    super(props)
+                    this.state = {
+                        title: '',
+                        description: '',
+                        image: '',
+                        url: ''
+                    };                
+                    this.onSuccess = this.onSuccess.bind(this);                                        
+                }                
+
+                //metoda se izvrsava nakon uspesnog instanciranja klase 'Image' a inicira ajax web api poziv
+                
+              /*  componentDidMount(){                
+                    $.ajax({
+                        type: 'GET',
+                        url : 'http://api.linkpreview.net',  
+                        data: {
+                            'key': "5a981cf098cec73a8708f3d4fc848be932707bbe6463b", 
+                            'q': this.props.url.web_url
+                        },                          
+                        success: this.onSuccess
+                    });
+                }
+                */
+                
+                //metoda se izvrsava nakon uspesnog instanciranja klase 'Image' a inicira ajax web api poziv               
+                componentDidMount(){                
+                    $.ajax({
+                        type: 'GET',
+                        url : 'http://api.linkpreview.net',                          
+                        data: {
+                            'key': "123456", 
+                            'q': "https://www.google.com"
+                        },                          
+                        success: this.onSuccess
+                      });
+                    }
+                
+                //metoda se izvrsava nakon uspesnog izvrsenja web api poziva u componentDidMount
+                onSuccess(responseData){                
+                    let title = responseData.title;
+                    let description = responseData.description;
+                    let image = responseData.image;
+                    let url = responseData.url;
+                    this.setState({'title': title, 'description': description, 'image': image, 'url': url});
+                }
+
+                //render pakuje podatke nakon onSuccess (primer poziva f-je iz React-a)
+                render(){          
+                    const url = this.props.url;                    
+                    const tr =  
+                        <div className="col-3 col-m-6 ">
+                            <img className="image-itself image-itself-m" src={this.state.image} onClick={() => this.props.clickHandler(url)}/>  
+                            <div className="image-title image-title-m">{this.state.title}</div>      
+                            <div className="image-desc image-desc-m">{this.state.description}</div>                            
+                        </div>;
+                    return tr;
+                }                                                            
+            }  
+
+            const UrlDetails = (props) => {                
+                const url = props.url;                
+                return(
+                    <div className="detail">
+                        <ul>
+                            <li><b>Url: </b><a href={url.web_url}>{url.headline.main}</a></li>
+                            <li><b>Headline: </b>{url.headline.main}</li>
+                            <li><b>Line: </b>{url.byline.original}</li>
+                            <li><b>Publise date: </b>{url.pub_date}</li>
+                            <li><b>Source: </b>{url.source}</li>
+                            <li><b>Word count: </b>{url.word_count}</li>
+                        </ul>
+                    </div>
+                );
+            };
+
+            //nezavisna g-ja vraca godinu iz sistemskog datuma
+            function getYear(){    
+                return new Date().getFullYear();
+            }
+
+
+
+         
+            ReactDOM.render(<Page />,  document.getElementById('root'));
+
+        </script>
+    </body>
+</html>

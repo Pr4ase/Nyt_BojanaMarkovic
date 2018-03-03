@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+        <!-- Bootstrap -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <title>NYTExplorer</title>
+
+        <style type="text/css">
+            div {
+                position: relative;
+            }
+            table {
+                width: 100%;
+            }
+
+            thead {
+                background-color: black;
+                color: white;
+            }
+
+            table,th,td {
+                border: thin solid black;
+                border-collapse: collapse;
+            }
+
+            th,td {
+                padding: 0.5em;
+                text-align: left;
+            }
+            
+            .image_title{
+                height: 30px;
+                font-weight: 500;
+            }
+            
+            .image_desc{
+                height: 60px;
+            }
+            
+            img{
+               width: 20%;
+            }
+  .grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 50px;
+ 
+  
+}
+.grid-container > div {
+ 
+  text-align: center;
+  padding: 50px 0;
+  
+}
+
+            tbody > tr:hover {background-color: #ddd;}
+        </style>
+    </head>
+
+    <body>
+
+        <h1>NY Times</h1>
+        <button onclick="find()" type="submit" class="btn btn-default btn-lg">Search news</button>
+        
+        <div id="root"></div>
+
+        <script type="text/babel">
+
+            class Page extends React.Component{
+
+                //konstruktor klase Page definise kako ce klasa biti instancirana
+                //definise niz 'webs' - kolekcija web linkova
+                //impelmentira metodu onSuccess koja ce biti automatksi pozvana kada Wweb api vrati success code
+                constructor(props){
+                    super(props)
+                    this.state = {
+                        urls: [],
+                        year:'',
+                        month:'',
+                        selectedUrl: {
+                            web_url: '',
+                            headline: {
+                                main: ''
+                            },                            
+                            byline: {
+                                original: ''
+                            },
+                            pub_date: '',
+                            source: '',
+                            word_count:''
+                      }
+                    };   
+
+                    this.onSuccess = this.onSuccess.bind(this);  
+                    this.handleClick = this.handleClick.bind(this);
+                    
+                }      
+                
+            handleClick(item){
+                // debugger;
+                console.log("Hello from handleClick!");
+                // dodajemo ovde ispis u konzolu item-a
+                // item cemo prvo da stringifikujemo
+                console.log(JSON.stringify(item));
+                // probajte i console.log(JSON.stringify(item,null,2)); za lepsi ispis
+
+                //predajemo stanje Page-u
+                this.setState({selectedUrl: item})
+            }
+              handleChangeMonth(event) {
+                  this.setState({month: event.target.value}); 
+      }
+
+            
+
+     
+                
+                //metoda se izvrsava nakon uspesnog instanciranja klase 'Page' a inicira ajax web api poziv
+                componentDidMount(){
+                    $.ajax({
+                        type   : "GET",
+                        url    : 'https://api.nytimes.com/svc/archive/v1/2017/1.json',
+                        data   : {apikey: "84f2dae5d3944f4c8e56a0c7b658eb49"},                    
+                        success: this.onSuccess                     
+                    })
+                }
+
+                //metoda se izvrsava nakon uspesnog zavrsetka web api poziva
+                onSuccess(responseData){
+                    
+                    //definise lokalniu niz 'webs'
+                    let urls = [];
+                    console.log(responseData)
+                    //iterator iz prvog web api odgovora smesta linkove u niz 'webs' - kolekicja web linkova
+                    for(var i = 0; i < 2; i++) {
+                        const doc = responseData.response.docs[i];                                                 
+                                            
+                        urls.push(doc);
+                    }
+                    
+                    //lokalni niz smestamo u state kao bi bio dostupan osatku drugoj klasi
+                    console.log('test Page onSuccess:', urls);
+                   
+                    this.setState({'urls': urls});                    
+                }
+                
+
+                                              
+                //render instancira poziva f-ju 'Urls' koja ce vratiti finalni odgovor drugog web api-ja
+                render() {
+                    
+                    return(
+                        <section id="finder">
+                          <form>
+                                    <label>
+                                      Year:
+                                      <input
+                                        type="number"
+                                        id="NYTYEAR"
+                                        className="form-control"
+                                        placeholder="Search year ..."
+                                        value={this.state.year}
+                                        onChange={this.handleInputChange} />
+                                    </label>
+                                    <br />
+                                    <label>
+                                      Months:
+                                      <input
+                                        type="number"
+                                        id="NYTMONTH"
+                                        placeholder="Search month ..."
+                                        className="form-control"
+                                        value={this.state.month}
+                                        onChange={this.handleInputChange} 
+                                        step="1" min="1" max="12"/>
+                                    </label>
+                                  </form>
+                            
+
+                             <div className="row">
+                            <div className="col-lg-8">    
+                                <Urls urls={this.state.urls}
+                                 selectionHandler={this.handleClick} />                               
+                            </div>
+ 
+                            <div className="details">
+                                <UrlDetails url={this.state.selectedUrl} />
+                            </div>
+                        </div>  
+                        </section>
+
+                    )
+                }
+            }  
+
+            //zasebna f-ja van klasa
+            function Urls(props){
+                console.log('test f-ja Urls:',props.urls);
+                return (
+                    <div> 
+                        {props.urls.map((url, index) => <Image key={index} url={url} clickHandler={props.selectionHandler} />)}
+                    </div>
+                );
+            }
+
+
+
+
+            //instancira je f-ja 'Urls', poziva drugi web api a vraca div u sa kome se nalaze title, image i description
+            class Image extends React.Component{
+
+                //konstruktor klase Image definise kako ce klasa biti instancirana
+                //definisevarijable u kojim ace biti smestei podaci za svaki item iz drugogo web api-ja
+                //impelmentira metodu onSuccess koja ce biti automatksi pozvana kada web api vrati success code
+                constructor(props){
+                    super(props)
+                    this.state = {
+                        title: '',
+                        description: '',
+                        image: '',
+                        url: ''
+                    };                
+                    this.onSuccess = this.onSuccess.bind(this);                                        
+                }                
+
+                //metoda se izvrsava nakon uspesnog instanciranja klase 'Image' a inicira ajax web api poziv
+          /*   componentDidMount(){                
+                    $.ajax({
+                        url: 'http://api.linkpreview.net',  
+                        method: 'GET',
+                        data: {
+                             'key': "5a9597be14b028d34dd2cce45ef1b962a93037ab1698c", 
+                            'q': this.props.url.web_url
+                        },                          
+                        success: this.onSuccess
+                      });
+                    }*/
+               componentDidMount(){                
+                    $.ajax({
+                        url: 'http://api.linkpreview.net',  
+                        method: 'GET',
+                        data: {
+                            'key': "123456", 
+                            'q': "https://www.google.com"
+                        },                          
+                        success: this.onSuccess
+                      });
+                    }
+                //metoda se izvrsava nakon uspesnog zavrsetka web api poziva i preuyzima vrednosti iz odgovora
+                onSuccess(responseData){                
+                    let title = responseData.title;
+                    let description = responseData.description;
+                    let image = responseData.image;
+                    let url = responseData.url;
+                    this.setState({'title': title, 'description': description, 'image': image, 'url': url});
+                }
+
+                //render vraca zapakovane podatke iz odgovora
+                render(){          
+                       const url = this.props.url;
+                    console.log('event', url)
+                    const tr =  
+                        <div>
+                            <div >
+                                <div className="image_title">{this.state.title}</div>                            
+                                <img src={this.state.image} onClick={() => this.props.clickHandler(url)}/>
+                                <div className="image_desc">{this.state.description}</div>
+                            </div>
+                        </div>;
+                return tr;
+                }                                                            
+            }   
+
+
+       const UrlDetails = (props) => {
+            console.log('UrlDetails',props.url);
+            const url = props.url;
+        console.log('UrlDetailsprop',url.web_url);
+            return (
+                <div>
+                    <ul>
+                        <li>Url:{url.web_url}</li>
+                        <li>{url.headline.main}</li>
+                        <li>{url.byline.original}</li>
+                        <li>Publise date: {url.pub_date}</li>
+                        <li>Source: {url.source}</li>
+                        <li>Word count: {url.word_count}</li>
+                       
+                    </ul>
+                </div>
+            );
+        }
+
+       
+
+
+            /***************************************************************************************************************
+            /* ovaj deo sada vise nije potreban
+            /***************************************************************************************************************
+            //instancira je klasa 'Page', vraca glavnu tabelu i njen sadrzaj
+            class Table extends React.Component{                        
+                render(){
+                    const {urls} = this.props;                             
+
+                    //proerava da li je niz 'images' prazan
+                    if(urls.length == 0){
+                        return <p>No results</p>;
+                    }
+
+                    //formira osnovnu strukturu tabele
+                    const table =
+                        <table>
+                            <thead>
+                                <tr>                                
+                                    <th>NYTExplorer - Images</th>                                
+                                </tr>
+                            </thead>
+                            <tbody>                            
+                                {
+                                //element niza 'urls' mapira u varijablu 'weurl' i instancira klasu TableRow)
+                                urls.map((url) => <TableRow url={url} />)
+                                }
+                            </tbody>
+                        </table>;
+                    return table;
+                }
+            }
+
+            //instancira je klasa 'Table', vraca red (div u kome se nalaze title, iamge i description) za glavnu tabelu 
+            class TableRow extends React.Component{
+                render(){      
+                    const url = this.props.url;
+
+                    //formira i vraca jedan red tabele koji sadrzi hyprrlink (item iz niza webs)
+                    const tr = <tr><td>{url}</td></tr>;
+                    return tr;
+                }
+            }
+            ***************************************************************************************************************/
+
+            //ovde se pokrece prethodno definisan React JavaScript tako sto se instancira klasa 'Page'            
+            //nacin na koji ce klasa 'Page' biti instancirana u objekat definisan je njenim konstruktorom
+            //rezultat celokupne React akcije  bice smesten u 'root' element glavnog html-a
+      
+        const root = document.getElementById('root');
+        ReactDOM.render(<Page />,  root);
+      
+           
+
+        </script>
+    </body>
+</html>
